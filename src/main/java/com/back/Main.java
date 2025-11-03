@@ -46,13 +46,24 @@ public class Main {
                 String[] keyValue = param.split("=");
 
                 int targetId = Integer.parseInt(keyValue[1]);
-                boolean deleted = deleteById(applist, 1);
+                boolean deleted = deleteById(applist, targetId);
 
                 if (deleted)
                     System.out.println(targetId + "번 명언이 삭제되었습니다.");
                 else    // 명언 삭제 예외처리
                     System.out.println(targetId + "번 명언은 존재하지 않습니다.");
 
+            }
+            else if (cmd.startsWith("수정"))
+            {
+                // ?를 기준으로 나뉨 [수정],[id=1]
+                String[] parts = cmd.split("\\?");
+
+                String param = parts[1]; // "id=1"
+                String[] keyValue = param.split("=");
+
+                int targetId = Integer.parseInt(keyValue[1]);
+                boolean deleted = updateById(applist, targetId);
             }
 
         }
@@ -78,6 +89,29 @@ public class Main {
                 return true;
             }
         }
+        return false; // 못 찾으면 false 반환
+    }
+
+    private static boolean updateById(List<App> list, int id) {
+        for (int i = 0; i < list.size(); i++) {
+            if (list.get(i).getId() == id) {
+                App app = list.get(i);
+
+                System.out.println("명언(기존) : " + app.getText());
+                System.out.print("명언 : ");
+                String newText = sc.nextLine();
+
+                System.out.println("작가(기존) : " + app.getAuthor());
+                System.out.print("작가 : ");
+                String newAuthor = sc.nextLine();
+
+                list.get(i).setText(newText);
+                list.get(i).setAuthor(newAuthor);
+                System.out.println(id + "번 명언이 수정되었습니다.");
+                return true;
+            }
+        }
+        System.out.println(id + "번 명언은 존재하지 않습니다.");
         return false; // 못 찾으면 false 반환
     }
 
