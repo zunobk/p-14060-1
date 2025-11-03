@@ -50,7 +50,7 @@ public class Main {
 
                 if (deleted)
                     System.out.println(targetId + "번 명언이 삭제되었습니다.");
-                else
+                else    // 명언 삭제 예외처리
                     System.out.println(targetId + "번 명언은 존재하지 않습니다.");
 
             }
