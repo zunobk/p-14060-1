@@ -28,6 +28,7 @@ public class Main {
                 System.out.print("작가 : ");
                 author = sc.nextLine();
 
+                // 4단계 완료
                 System.out.println(++id+"번 명언이 등록되었습니다.");
                 applist.add(new App(text, author));
 
