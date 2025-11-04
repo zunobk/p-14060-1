@@ -53,6 +53,8 @@ public class Main {
             }
             else if (cmd.equals("목록"))
                 printList(applist);
+            else if (cmd.equals("빌드"))
+                buildDataJson(applist);
             else if (cmd.startsWith("삭제"))
             {
                 // ?를 기준으로 나뉨 [삭제],[id=1]
@@ -292,27 +294,40 @@ public class Main {
         }
     }
 
+    // data.json 파일 생성
+    private static void buildDataJson(List<App> applist) {
+        String path = DIR + "/data.json";
 
-}
-class App {
-    private int id;
-    private String text;
-    private String author;
+        try (FileWriter fw = new FileWriter(path)) {
+            // 1️⃣ 배열 시작
+            fw.write("[\n");
 
-    public App(int id, String text, String author) {
-        this.id = id;
-        this.text = text;
-        this.author = author;
+            // 2️⃣ 각 명언을 JSON 형식으로 작성
+            for (int i = 0; i < applist.size(); i++) {
+                App app = applist.get(i);
+
+                fw.write("  {\n");
+                fw.write("    \"id\": " + app.getId() + ",\n");
+                fw.write("    \"content\": " + jsonString(app.getText()) + ",\n");
+                fw.write("    \"author\": " + jsonString(app.getAuthor()) + "\n");
+                fw.write("  }");
+
+                // 3️⃣ 마지막 항목이 아니면 쉼표 추가
+                if (i < applist.size() - 1) {
+                    fw.write(",");
+                }
+                fw.write("\n");
+            }
+
+            // 4️⃣ 배열 끝
+            fw.write("]");
+
+            System.out.println("data.json 파일의 내용이 갱신되었습니다.");
+
+        } catch (IOException e) {
+            System.out.println("data.json 생성 오류: " + e.getMessage());
+        }
     }
 
-    public int getId() { return id; }
-    public String getText() { return text; }
-    public String getAuthor() { return author; }
 
-    public void setText(String text) {
-        this.text = text;
-    }
-    public void setAuthor(String author) {
-        this.author = author;
-    }
 }
